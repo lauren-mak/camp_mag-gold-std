@@ -1,0 +1,16 @@
+#'''Parameter and computational resource config.'''#
+
+
+ext: ''
+
+
+# --- map_asm_ref --- #
+
+map_asm_ref_threads: 20
+map_asm_ref_mem_mb: 100000
+
+
+# --- amber --- #
+
+amber_mem_mb: 50000
+

@@ -1,0 +1,126 @@
+'''Workflow for the CAMP MAG Gold-Standard Evaluation module.'''
+
+
+from contextlib import redirect_stderr
+import os
+from os.path import abspath, basename, dirname, join
+import pandas as pd
+from utils import Workflow_Dirs, ingest_samples, ingest_references
+
+
+# Load and/or make the working directory structure
+dirs = Workflow_Dirs(config['work_dir'], 'mag-gold-std')
+
+
+# Load sample names and input files 
+SAMPLES = ingest_samples(config['samples'], dirs.TMP)
+SAMPLES_ASM, SAMPLES_REFS = ingest_references(config['references'], dirs.TMP)
+BINNERS = ['1_metabat2', '2_concoct', '3_semibin', '4_maxbin2', '5_metabinner', '6_vamb', '7_dastool']
+
+
+# Specify the location of any external resources and scripts
+dirs_ext = config['ext']
+dirs_scr = join(dirs_ext, 'scripts')
+
+
+# --- Workflow output --- #
+
+
+rule all:
+    input:
+        join(dirs.OUT, 'final_reports', 'complete.txt'),
+
+
+def get_sample_ref(wildcards):
+    return join(dirs.TMP, SAMPLES_REFS[wildcards.sample])
+
+
+# --- Workflow steps --- #
+
+
+rule merge_refs:
+    input:
+        get_sample_ref,
+    output:
+        join(dirs.OUT, '0_asm_ref', '{sample}_refs.fna'),
+    shell:
+        """
+        cat {input}/* > {output}
+        """
+
+
+rule map_asm_ref:
+    input:
+        asm = join(dirs.TMP, '{sample}', 'assembly.fa'),
+        ref = join(dirs.OUT, '0_asm_ref', '{sample}_refs.fna'),
+    output:
+        join(dirs.OUT, '0_asm_ref', '{sample}.sam'),
+    log:
+        join(dirs.LOG, 'mapping', '{sample}.out'),
+    threads: config['map_asm_ref_threads'],
+    resources:
+        mem_mb = lambda wildcards, attempt: \
+              int(config['map_asm_ref_mem_mb']) + 10000 * attempt,
+    params:
+        out_dir = join(dirs.OUT, '0_asm_ref', '{sample}'),
+    shell:
+        """
+        mkdir -p {params.out_dir}
+        minimap2 -c -x asm10 -B5 -O4,16 --no-long-join -r 200 -N 50 -s 65 -z 200 \
+            --mask-level 0.9 --min-occ 200 -g 2500 --score-N 2 --cs -t {threads} \
+            {input.ref} {input.asm} > {output} 2> {log}
+        """
+
+
+rule make_asm_ref_biobox:
+    input:
+        join(dirs.OUT, '0_asm_ref', '{sample}.sam'),
+    output:
+        join(dirs.OUT, '0_asm_ref', '{sample}.biobox.txt'),
+    params:
+        biobox_scr = join(dirs_scr, 'sam_to_biobox.py'),
+    shell:
+        """
+        python {params.biobox_scr} {input} {output}
+        """
+
+
+rule make_bin_biobox:
+    input:
+        join(dirs.TMP, '{sample}', '{binner}'),
+    output:
+        join(dirs.OUT, '1_binners', '{sample}', '{binner}.biobox.txt'),
+    params:
+        biobox_scr = join(dirs_scr, 'bin_to_biobox.py'),
+    shell:
+        """
+        python {params.biobox_scr} {input} {output}
+        """
+
+
+rule AMBER:
+    input:
+        gs = join(dirs.OUT, '0_asm_ref', '{sample}.biobox.txt'),
+        binners = lambda wildcards: expand(join(dirs.OUT, '1_binners', '{sample}', '{binner}.biobox.txt'), sample = wildcards.sample, binner = BINNERS),
+    output:
+        join(dirs.OUT, '2_amber', '{sample}', 'index.html'),
+    conda:
+        join(config['env_yamls'], 'amber.yaml'),
+    resources:
+        mem_mb = int(config['amber_mem_mb']),
+    params:
+        out_dir = join(dirs.OUT, '2_amber', '{sample}'),
+    shell:
+        """
+        amber.py -g {input.gs} {input.binners} -o {params.out_dir}
+        """
+
+
+rule make_config:
+    input:
+        expand(join(dirs.OUT, '2_amber', '{sample}', 'index.html'), sample = SAMPLES),
+    output:
+        join(dirs.OUT, 'final_reports', 'complete.txt'),
+    run:
+        open(str(output), 'w').close()
+

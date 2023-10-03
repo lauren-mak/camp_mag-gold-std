@@ -1,0 +1,45 @@
+2023-10-03 10:36:08,538 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,539 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,539 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,540 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,542 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,550 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,554 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,561 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,561 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,561 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,561 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,562 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,568 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,568 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,575 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,575 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,577 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,587 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,590 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,590 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,596 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,609 INFO Found @Version:0.9.0
+2023-10-03 10:36:08,610 INFO Found @SampleID:_SAMPLEID_
+2023-10-03 10:36:08,615 INFO Loading _SAMPLEID_
+2023-10-03 10:36:08,623 INFO Loading Gold standard
+2023-10-03 10:36:08,632 INFO Loading 1_metabat2.biobox.txt
+2023-10-03 10:36:08,638 INFO Loading 2_concoct.biobox.txt
+2023-10-03 10:36:08,642 INFO Loading 3_semibin.biobox.txt
+2023-10-03 10:36:08,644 INFO Loading 4_maxbin2.biobox.txt
+2023-10-03 10:36:08,647 INFO Loading 5_metabinner.biobox.txt
+2023-10-03 10:36:08,650 INFO Loading 6_vamb.biobox.txt
+2023-10-03 10:36:08,653 INFO Loading 7_dastool.biobox.txt
+2023-10-03 10:36:08,657 INFO Creating output directories
+2023-10-03 10:36:08,671 INFO Evaluating Gold standard (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,754 INFO Evaluating 1_metabat2.biobox.txt (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,790 INFO Evaluating 2_concoct.biobox.txt (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,824 INFO Evaluating 3_semibin.biobox.txt (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,854 INFO Evaluating 4_maxbin2.biobox.txt (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,886 INFO Evaluating 5_metabinner.biobox.txt (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,916 INFO Evaluating 6_vamb.biobox.txt (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,954 INFO Evaluating 7_dastool.biobox.txt (sample _SAMPLEID_, genome binning)
+2023-10-03 10:36:08,985 INFO Saving computed metrics
+2023-10-03 10:36:09,131 INFO Creating genome binning plots
+2023-10-03 10:36:23,859 INFO Creating HTML page
+2023-10-03 10:36:25,313 INFO AMBER finished successfully. All results have been saved to /home/lam4003/bin/camp_mag-gold-std/test_out/mag-gold-std/2_amber/uhgg
